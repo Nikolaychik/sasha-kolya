@@ -24,10 +24,12 @@ class TwitterBot:
         timeline = self.api.user_timeline()
         return [tweet.text for tweet in timeline]
 
+    def send_message_to_followers(self, text):
+        followers = bot.api.followers()
+        for follower in followers:
+            bot.api.send_direct_message(user_id=follower.id, text=text)
+
+bot = TwitterBot(configs)
+bot.send_message_to_followers('Yo!')
 
 
-
-tweety = TwitterBot(configs)
-
-followers = tweety.api.followers()
-print(followers)
