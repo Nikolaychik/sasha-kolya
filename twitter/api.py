@@ -33,10 +33,11 @@ class TwitterBot:
     def destroy_status(self, status_id):
         self.api.destroy_status(status_id)
 
-    def send_message_to_followers(self, text):
-
-        for user_id in self.get_followers_ids():
+    def send_message_to_users(self, ids, text):
+        for user_id in ids:
             self.api.send_direct_message(user_id=user_id, text=text)
 
     def get_followers_ids(self):
         return self.api.followers_ids()
+
+
