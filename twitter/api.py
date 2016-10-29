@@ -20,11 +20,11 @@ class TwitterBot:
     def update_status(self, status):
         self.api.update_status(status)
 
-    def tweets_timeline(self):
+    def tweets_timeline(self, user_id=None):
         """
         Returns 20 latest tweets of user
         """
-        timeline = self.api.user_timeline()
+        timeline = self.api.user_timeline(user_id=user_id)
         return [(tweet.text, tweet.id) for tweet in timeline]
 
     def destroy_status(self, status_id):
