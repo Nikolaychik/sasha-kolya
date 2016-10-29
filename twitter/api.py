@@ -17,8 +17,12 @@ class TwitterBot:
         self.api = tweepy.API(auth)
         self.id = self.api.me().id
 
-    def update_status(self, status):
-        self.api.update_status(status)
+    def update_status(self, status, filename=None):
+        import os
+        if filename:
+            self.api.update_with_media(filename=os.path)
+        else:
+            self.api.update_status(status)
 
     def tweets_timeline(self, user_id=None):
         """
@@ -39,3 +43,6 @@ class TwitterBot:
 
     def get_friends_ids(self):
         return self.api.friends_ids()
+
+a = TwitterBot(credentials=configs)
+a.api.followers()

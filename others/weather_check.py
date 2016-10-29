@@ -31,13 +31,3 @@ class WeatherCollector:
         day_light_down_time = \
         str(self.parsed_html_document.find('div', class_='infoDaylight').text).strip().split('Захід ')[1]
         return day_light_down_time
-
-
-w = WeatherCollector()
-
-print(w.sinoptik_current_temperature_kiev())
-print(w.sinoptik_min_temperature_current_day_kiev())
-print(w.sinoptik_max_temperature_current_day_kiev())
-print(w.sinoptik_min_temperature_kiev_historyval())
-print(w.sinoptik_max_temperature_kiev_historyval())
-print(w.sinoptik_info_day_light_down_time())
