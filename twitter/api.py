@@ -36,3 +36,6 @@ class TwitterBot:
 
     def get_followers_ids(self):
         return self.api.followers_ids()
+
+    def get_friends_ids(self):
+        return self.api.friends_ids()
