@@ -25,7 +25,6 @@ class TwitterBot:
         Returns 20 latest tweets of user
         """
         timeline = self.api.user_timeline()
-
         tweets_list = []
         for tweet in timeline:
             tweets_list.append(tweet.text)
@@ -33,3 +32,8 @@ class TwitterBot:
 
     def destroy_status(self, status_id):
         self.api.destroy_status(status_id)
+
+    def send_message_to_followers(self, text):
+        followers = self.api.followers()
+        for follower in followers:
+            self.api.send_direct_message(user_id=follower.id, text=text)
