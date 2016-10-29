@@ -21,13 +21,18 @@ class TwitterBot:
         self.api.update_status(status)
 
     def tweets_timeline(self):
+        """
+        Returns 20 latest tweets of user
+        """
         timeline = self.api.user_timeline()
-        return [tweet.text for tweet in timeline]
+        return [(tweet.text, tweet.id) for tweet in timeline]
+
+    def destroy_status(self, status_id):
+        self.api.destroy_status(status_id)
 
     def send_message_to_followers(self, text):
-        followers = bot.api.followers()
-        for follower in followers:
-            bot.api.send_direct_message(user_id=follower.id, text=text)
+        for user_id in self.get_followers_ids():
+            self.api.send_direct_message(user_id=user_id, text=text)
 
-bot = TwitterBot(configs)
-bot.send_message_to_followers('Yo!')
+    def get_followers_ids(self):
+        return self.api.followers_ids()
