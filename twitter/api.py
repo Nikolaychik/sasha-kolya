@@ -20,12 +20,22 @@ class TwitterBot:
         self.api.update_status(status)
 
     def tweets_timeline(self):
+        """
+        Returns 20 latest tweets of user
+        """
         timeline = self.api.user_timeline()
 
         tweets_list = []
         for tweet in timeline:
             tweets_list.append(tweet.text)
         return tweets_list
+
+    def destroy_status(self, status_id):
+        self.api.destroy_status(status_id)
+
+
+
+
 tweety = TwitterBot(configs)
 
 print(tweety.tweets_timeline())
