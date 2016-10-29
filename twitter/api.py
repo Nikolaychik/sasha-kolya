@@ -31,5 +31,3 @@ class TwitterBot:
 
 bot = TwitterBot(configs)
 bot.send_message_to_followers('Yo!')
-
-
