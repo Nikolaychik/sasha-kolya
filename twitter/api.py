@@ -1,6 +1,5 @@
 import tweepy
 
-
 configs = {
     'API KEY': 'FcuBGT2E2vSusk6rNlSfSUQCc',
     'API Secret': 'Lp96ATqrEP4rzoUCiZpBw5b7dXFbJoMCONDFwwuDADjL5S43C2',
@@ -8,16 +7,28 @@ configs = {
     'Access token secret': 'yY2GcZxokNenu88kCQ7F6vVXwhgHipElsXEomQi0TWGwX'
 }
 
-auth = tweepy.OAuthHandler(consumer_key=configs['API KEY'],
-                           consumer_secret=configs['API Secret'])
-auth.set_access_token(configs['Access token'],
-                      configs['Access token secret'])
 
-api = tweepy.API(auth)
+class TwitterBot:
+    def __init__(self, credentials):
+        auth = tweepy.OAuthHandler(consumer_key=credentials['API KEY'],
+                                   consumer_secret=credentials['API Secret'])
+        auth.set_access_token(credentials['Access token'],
+                              credentials['Access token secret'])
+        self.api = tweepy.API(auth)
 
-public_tweets = api.home_timeline()
-for tweet in public_tweets:
-    print(tweet.text)
+    def update_status(self, status):
+        self.api.update_status(status)
 
-status = "Hello, World!"
-api.update_status(status)
+    def tweets_timeline(self):
+        timeline = self.api.user_timeline()
+
+        tweets_list = []
+        for tweet in timeline:
+            tweets_list.append(tweet.text)
+        return tweets_list
+tweety = TwitterBot(configs)
+
+print(tweety.tweets_timeline())
+
+status = input('Enter your tweet: ')
+tweety.update_status(status)

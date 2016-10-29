@@ -2,52 +2,42 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def sinoptik_temperature_current_kiev():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(html, "lxml")
-    current_temp = parsed_html_document.find('p', class_='today-temp').text
-    return current_temp
+class WeatherCollector:
+    def __init__(self):
+        html = requests.get('https://ua.sinoptik.ua/погода-київ').text
+        self.parsed_html_document = BeautifulSoup(html, 'lxml')
+
+    def sinoptik_current_temperature_kiev(self):
+        current_temp = self.parsed_html_document.find('p', class_='today-temp').text
+        return current_temp
+
+    def sinoptik_min_temperature_current_day_kiev(self):
+        today_min = self.parsed_html_document.find('div', class_='min').text[-3:]
+        return today_min
+
+    def sinoptik_max_temperature_current_day_kiev(self):
+        max_temp = self.parsed_html_document.find('div', class_='max').text[-3:]
+        return max_temp
+
+    def sinoptik_min_temperature_kiev_historyval(self):
+        current_temp = self.parsed_html_document.find('p', class_='infoHistoryval').text.split(':')[2][1:7]
+        return current_temp
+
+    def sinoptik_max_temperature_kiev_historyval(self):
+        current_temp = self.parsed_html_document.find('p', class_='infoHistoryval').text.split(':')[1][1:6]
+        return current_temp
+
+    def sinoptik_info_day_light_down_time(self):
+        day_light_down_time = \
+        str(self.parsed_html_document.find('div', class_='infoDaylight').text).strip().split('Захід ')[1]
+        return day_light_down_time
 
 
-def sinoptik_info_day_light_down_time():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(html, "lxml")
-    day_light_down_time = str(parsed_html_document.find('div', class_='infoDaylight').text).strip().split('Захід ')[1]
-    return day_light_down_time
+w = WeatherCollector()
 
-
-def sinoptik_temperature_current_kiev_historyval():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(markup = html)
-    current_temp = parsed_html_document.find('p', class_='infoHistoryval').text.split(':')[2][:5]
-    return  current_temp
-
-
-def sinoptik_temperature_max_kiev():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(markup=html)
-    current_temp = parsed_html_document.find('p', class_='infoHistoryval').text
-    return current_temp.split(" ")[2]
-
-
-def sinoptik_max_temperature_current_day_kiev():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(html, 'lxml')
-    max_temp = parsed_html_document.find('div', class_='max').text
-    return max_temp
-
-
-def sinoptik_today_min():
-    html = requests.get('https://ua.sinoptik.ua/погода-київ').text
-    parsed_html_document = BeautifulSoup(markup=html)
-    today_min = parsed_html_document.find('div', class_='min').text
-
-    return today_min
-
-
-if __name__ == '__main__':
-    sinoptik_temperature_current_kiev()
-    sinoptik_info_day_light_down_time()
-    sinoptik_today_min()
-    sinoptik_temperature_max_kiev()
-    sinoptik_temperature_current_kiev_historyval()
+print(w.sinoptik_current_temperature_kiev())
+print(w.sinoptik_min_temperature_current_day_kiev())
+print(w.sinoptik_max_temperature_current_day_kiev())
+print(w.sinoptik_min_temperature_kiev_historyval())
+print(w.sinoptik_max_temperature_kiev_historyval())
+print(w.sinoptik_info_day_light_down_time())
