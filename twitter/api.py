@@ -27,13 +27,16 @@ class TwitterBot:
         timeline = self.api.user_timeline()
         tweets_list = []
         for tweet in timeline:
-            tweets_list.append(tweet.text)
+            tweets_list.append((tweet.id, tweet.text))
         return tweets_list
 
     def destroy_status(self, status_id):
         self.api.destroy_status(status_id)
 
     def send_message_to_followers(self, text):
-        followers = self.api.followers()
-        for follower in followers:
-            self.api.send_direct_message(user_id=follower.id, text=text)
+
+        for user_id in self.get_followers_ids():
+            self.api.send_direct_message(user_id=user_id, text=text)
+
+    def get_followers_ids(self):
+        return self.api.followers_ids()
