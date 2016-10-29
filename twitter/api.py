@@ -15,6 +15,7 @@ class TwitterBot:
         auth.set_access_token(credentials['Access token'],
                               credentials['Access token secret'])
         self.api = tweepy.API(auth)
+        self.id = self.api.me().id
 
     def update_status(self, status):
         self.api.update_status(status)
@@ -32,13 +33,3 @@ class TwitterBot:
 
     def destroy_status(self, status_id):
         self.api.destroy_status(status_id)
-
-
-
-
-tweety = TwitterBot(configs)
-
-print(tweety.tweets_timeline())
-
-status = input('Enter your tweet: ')
-tweety.update_status(status)
